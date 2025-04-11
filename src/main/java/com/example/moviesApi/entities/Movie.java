@@ -1,0 +1,73 @@
+package com.example.moviesApi.entities;
+
+import jakarta.persistence.JoinColumn;
+
+import java.util.Set;
+
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+
+@Entity
+@Table(name = "movies")
+@NoArgsConstructor 
+@AllArgsConstructor
+@Getter
+@ToString
+public class Movie {
+	    
+	    @Id
+	    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	    private Integer movieId;
+
+	    @NotBlank(message = "Title is required")
+	    @Size(max = 100, message = "Title cannot exceed 100 characters")
+	    @Column(nullable = false, length = 100)
+	    private String title;
+
+	    @NotBlank(message = "Director name is required")
+	    @Size(max = 50, message = "Director name cannot exceed 50 characters")
+	    @Column(nullable = false, length = 50)
+	    private String director;
+
+	    @NotBlank(message = "Studio name is required")
+	    @Size(max = 50, message = "Studio name cannot exceed 50 characters")
+	    @Column(nullable = false, length = 50)
+	    private String studio;
+
+	    @ElementCollection
+	    @NotEmpty(message = "At least one cast member is required")
+	    @CollectionTable(name = "movie_cast", joinColumns = @JoinColumn(name = "movie_id"))
+	    @Column(name = "cast_member", nullable = false)
+	    private Set<@NotBlank(message = "Cast member name cannot be blank") String> movieCast;
+
+	    @NotNull(message = "Release year is required")
+	    @Min(value = 1888, message = "Release year must be 1888 or later")
+	    @Max(value = 2100, message = "Release year must be 2100 or earlier")
+	    @Column(nullable = false)
+	    private Integer releaseYear;
+
+	    @NotBlank(message = "Poster URL is required")
+	    @Pattern(regexp = "^(https?://).+", message = "Poster URL must start with http:// or https://")
+	    @Column(nullable = false)
+	    private String poster;
+
+	}
+
