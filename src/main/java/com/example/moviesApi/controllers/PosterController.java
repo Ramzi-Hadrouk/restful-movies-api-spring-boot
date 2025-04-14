@@ -50,7 +50,6 @@ public class PosterController {
 	public void downloadPosterHandler(@PathVariable String fileName, HttpServletResponse response) throws IOException {
 	    try {
 	    	InputStream resourceFile = posterService.downloadPoster(fileName);
-	        // Verify the file exists and is readable
 
 	        // Set response headers
 	        response.setContentType(MediaType.IMAGE_PNG_VALUE);

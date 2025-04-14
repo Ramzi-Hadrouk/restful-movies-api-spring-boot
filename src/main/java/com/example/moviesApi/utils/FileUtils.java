@@ -32,7 +32,7 @@ public final class FileUtils {
      * @return the full URL to access the file
      */
     public static String buildFileUrl(String baseUrl, String filename) {
-        return baseUrl.endsWith("/") ? baseUrl + filename : baseUrl + "/" + filename;
+        return baseUrl.endsWith("/") ? baseUrl+POSTER_UPLOAD_PATH+ "/" + filename : baseUrl + "/"+POSTER_UPLOAD_PATH + "/"+ filename;
     }
 
     public static Path getPosterPath(String filename) {

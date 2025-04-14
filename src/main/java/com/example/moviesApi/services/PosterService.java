@@ -39,10 +39,7 @@ public class PosterService {
     /**
      * Downloads a movie poster from the specified directory.
      * The method returns a PosterDownloadResponse depending on the provided option.
-     *
-     * @param path the directory where the poster is stored
      * @param filename the name of the poster file to download
-     * @param option indicates whether to return the file's path or its InputStream
      * @return a PosterDownloadResponse object containing the file path or input stream
      * @throws IOException if the file is not found or cannot be read
      */
@@ -71,7 +68,6 @@ public class PosterService {
      * Sanitizes the file name by cleaning it and ensuring it is valid.
      * If the cleaned name contains invalid sequences (like "..") or is empty,
      * a new file name is generated using a prefix, current time, and original extension.
-     *
      * @param originalFileName the original file name from the uploaded file
      * @return a valid, sanitized file name
      */
