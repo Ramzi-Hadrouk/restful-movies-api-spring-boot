@@ -24,11 +24,11 @@ import jakarta.servlet.http.HttpServletResponse;
 public class PosterController {
 
 	private final PosterService posterService;
-	private final String postersFolderPath;
+	
 
 	public PosterController(PosterService posterService) {
 		this.posterService = posterService;
-		this.postersFolderPath = "uploads/posters";
+		
 	}
 
 	@PostMapping("/upload")
@@ -38,7 +38,7 @@ public class PosterController {
 	            return ResponseEntity.badRequest().body("Please select a file");
 	        }
 
-	        String fileName = posterService.uploadPoster(postersFolderPath, posterImageFile);
+	        String fileName = posterService.uploadPoster( posterImageFile);
 	        return ResponseEntity.ok("File Uploaded: " + fileName);
 	    } catch (IOException e) {
 	        e.printStackTrace(); // or use a logger
@@ -49,7 +49,7 @@ public class PosterController {
 	@GetMapping("/{fileName}")
 	public void downloadPosterHandler(@PathVariable String fileName, HttpServletResponse response) throws IOException {
 	    try {
-	    	InputStream resourceFile = posterService.downloadPoster(postersFolderPath, fileName);
+	    	InputStream resourceFile = posterService.downloadPoster(fileName);
 	        // Verify the file exists and is readable
 
 	        // Set response headers

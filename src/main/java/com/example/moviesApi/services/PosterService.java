@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.moviesApi.utils.AppConstants;
 import com.example.moviesApi.utils.FileUtils;
 
 @Service
@@ -16,7 +17,7 @@ public class PosterService {
 
     // Constant to define the image MIME type prefix
     private static final String IMAGE_PREFIX = "image/";
-
+    private static final String POSTER_UPLOAD_PATH =AppConstants.POSTER_UPLOAD_PATH;
     /**
      * Uploads a movie poster to the specified path.
      *
@@ -25,11 +26,11 @@ public class PosterService {
      * @return the sanitized file name of the uploaded poster
      * @throws IOException if any I/O error occurs or if the file is not a valid image
      */
-    public String uploadPoster(String path, MultipartFile file) throws IOException {
+    public String uploadPoster( MultipartFile file) throws IOException {
         String cleanedFileName = sanitizeFileName(file.getOriginalFilename());
         validateImageFile(file);
         Path fullPath = FileUtils.getPosterPath(cleanedFileName);
-        createDirectoryIfNotExists(Paths.get(path));
+        createDirectoryIfNotExists(Paths.get( POSTER_UPLOAD_PATH));
         Files.copy(file.getInputStream(), fullPath, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
 
         return cleanedFileName;
@@ -45,7 +46,7 @@ public class PosterService {
      * @return a PosterDownloadResponse object containing the file path or input stream
      * @throws IOException if the file is not found or cannot be read
      */
-    public InputStream downloadPoster(String path, String filename) throws IOException {
+    public InputStream downloadPoster(String filename) throws IOException {
         // Build the full file path
         Path filePath = FileUtils.getPosterPath(filename);
 
