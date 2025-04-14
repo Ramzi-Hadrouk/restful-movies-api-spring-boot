@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.moviesApi.utils.FileUtils;
+
 @Service
 public class PosterService {
 
@@ -26,7 +28,7 @@ public class PosterService {
     public String uploadPoster(String path, MultipartFile file) throws IOException {
         String cleanedFileName = sanitizeFileName(file.getOriginalFilename());
         validateImageFile(file);
-        Path fullPath = Paths.get(path, cleanedFileName);
+        Path fullPath = FileUtils.getPosterPath(cleanedFileName);
         createDirectoryIfNotExists(Paths.get(path));
         Files.copy(file.getInputStream(), fullPath, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
 
@@ -45,7 +47,7 @@ public class PosterService {
      */
     public InputStream downloadPoster(String path, String filename) throws IOException {
         // Build the full file path
-        Path filePath = Paths.get(path, filename);
+        Path filePath = FileUtils.getPosterPath(filename);
 
         // Check if file exists
         if (!Files.exists(filePath)) {
