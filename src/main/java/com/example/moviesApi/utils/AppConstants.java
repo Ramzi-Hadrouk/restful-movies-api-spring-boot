@@ -6,7 +6,7 @@ public class AppConstants {
 	    }
 
 	    // File-related constants
-	    public static final String FILE_BASE_URL = "https://127.0.0.1:8080";
+	    public static final String BASE_URL = "https://127.0.0.1:8080";
 	    public static final String POSTER_UPLOAD_PATH = "uploads/posters";
 
 	    // Auth-related constants
