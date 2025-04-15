@@ -7,8 +7,8 @@ public class AppConstants {
 
 	    // File-related constants
 	    public static final String BASE_URL = "http://localhost:8080/";
-	    public static final String POSTER_UPLOAD_PATH = "uploads/posters";
-
+	    public static final String POSTER_UPLOAD_PATH = "src/main/resources/static/uploads/posters";
+	    public static final String POSTER_Download_PATH = "uploads/posters";
 	    // Auth-related constants
 	    public static final int TOKEN_EXPIRY_MINUTES = 60;
 
