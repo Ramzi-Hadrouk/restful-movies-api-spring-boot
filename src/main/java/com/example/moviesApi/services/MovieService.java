@@ -1,6 +1,8 @@
 package com.example.moviesApi.services;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,7 +28,19 @@ public class MovieService {
 	            .orElseThrow(() -> new RuntimeException("Movie not found with id: " + id));
 	    return mapToMovieDto(movie);
 	}
+	
+	/*----------------GET All Movies---------------*/
+	public List<MovieDto> getAllMovies() {
+	    // Retrieve all movies from the repository.
+	    List<Movie> movies = movieRepository.findAll();
+	    
+	    // Map each Movie entity to a MovieDto.
+	    return movies.stream()
+	                 .map(this::mapToMovieDto)
+	                 .collect(Collectors.toList());
+	}
 
+	/*----------------SAVE a Movie---------------*/
 	public MovieDto saveMovie(MovieDto movieDto, MultipartFile poster) throws IOException {
 		// Upload the poster and validate the result.
 		String posterName = posterService.uploadPoster(poster);

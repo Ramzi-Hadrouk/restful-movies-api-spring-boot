@@ -1,6 +1,7 @@
 package com.example.moviesApi.controllers;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,6 +26,8 @@ public class MovieController {
 	public MovieController(MovieService movieService) {
 		this.movieService = movieService;
 	}
+	
+	/*--------------GET Movie By Id--------*/
 	@GetMapping("/{id}")
 	public ResponseEntity<?> getMovieById(@PathVariable Integer id) {
 	    try {
@@ -37,7 +40,22 @@ public class MovieController {
 	                             .body( ex.getMessage());
 	    }
 	}
+	
+	/*--------------GET All Movies-------*/
+	@GetMapping
+	public ResponseEntity<?> getAllMovies() {
+	    try {
+	        // Call the service method to get all movies.
+	        List<MovieDto> movieList = movieService.getAllMovies();
+	        return ResponseEntity.ok(movieList);
+	    } catch (RuntimeException ex) {
+	        // Log the error if you have a logger (e.g., logger.error("Error fetching movies", ex);)
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+	                             .body("An error occurred: " + ex.getMessage());
+	    }
+	}
 
+	
 	/**
 	 * Endpoint to create a new movie.
 	 *
