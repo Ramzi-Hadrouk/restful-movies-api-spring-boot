@@ -19,6 +19,13 @@ public class MovieService {
 		this.movieRepository = movieRepo;
 		this.posterService = new PosterService();
 	}
+	
+	/*----------------GET Movie By ID----------------*/
+	public MovieDto getMovieById(Integer id) {
+	    Movie movie = movieRepository.findById(id)
+	            .orElseThrow(() -> new RuntimeException("Movie not found with id: " + id));
+	    return mapToMovieDto(movie);
+	}
 
 	public MovieDto saveMovie(MovieDto movieDto, MultipartFile poster) throws IOException {
 		// Upload the poster and validate the result.
