@@ -20,7 +20,7 @@ import com.example.moviesApi.services.PosterService;
 import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
-@RequestMapping("/file/")
+@RequestMapping("/file")
 public class PosterController {
 
 	private final PosterService posterService;

@@ -17,9 +17,9 @@ public class MovieService {
 	private MovieRepository movieRepository;
 	private PosterService posterService;
 
-	public MovieService(MovieRepository movieRepo) {
+	public MovieService(MovieRepository movieRepo,PosterService posterService) {
 		this.movieRepository = movieRepo;
-		this.posterService = new PosterService();
+		this.posterService = posterService;
 	}
 	
 	/*----------------GET Movie By ID----------------*/
@@ -81,7 +81,7 @@ public class MovieService {
 
 	/**
 	 * Helper method to map a Movie entity to a MovieDto.
-	 */
+	 */ 
 	private MovieDto mapToMovieDto(Movie movie) {
 		return new MovieDto(
 				movie.getMovieId(),

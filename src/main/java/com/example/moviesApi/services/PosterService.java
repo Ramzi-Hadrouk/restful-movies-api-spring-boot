@@ -5,6 +5,9 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.UUID;
+
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,15 +29,17 @@ public class PosterService {
      * @return the sanitized file name of the uploaded poster
      * @throws IOException if any I/O error occurs or if the file is not a valid image
      */
-    public String uploadPoster( MultipartFile file) throws IOException {
-        String cleanedFileName = sanitizeFileName(file.getOriginalFilename());
-        validateImageFile(file);
-        Path fullPath = FileUtils.getPosterPath(cleanedFileName);
-        createDirectoryIfNotExists(Paths.get( POSTER_UPLOAD_PATH));
-        Files.copy(file.getInputStream(), fullPath, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
 
-        return cleanedFileName;
-    }
+public String uploadPoster(MultipartFile file) throws IOException {
+    String originalFileName = sanitizeFileName(file.getOriginalFilename());
+    validateImageFile(file);
+    // Create path and copy file
+    createDirectoryIfNotExists(Paths.get(POSTER_UPLOAD_PATH));
+    Path fullPath = FileUtils.getPosterPath(originalFileName);
+    Files.copy(file.getInputStream(), fullPath, StandardCopyOption.REPLACE_EXISTING);
+
+    return originalFileName;
+}
 
     /**
      * Downloads a movie poster from the specified directory.
@@ -72,22 +77,20 @@ public class PosterService {
      * @return a valid, sanitized file name
      */
     private String sanitizeFileName(String originalFileName) {
-        String cleanedFileName = StringUtils.cleanPath(originalFileName);
-
-        // Check if the cleaned file name is invalid
-        if (cleanedFileName.contains("..") || cleanedFileName.trim().isEmpty()) {
-            // Try to extract the extension from the original file name
-            String extension = "";
-            int dotIndex = cleanedFileName.lastIndexOf('.');
-            if (dotIndex > 0 && dotIndex < cleanedFileName.length() - 1) {
-                extension = cleanedFileName.substring(dotIndex);
-            }
-            // Generate a new file name with a prefix, current timestamp, and extension if available
-            cleanedFileName = "poster_" + System.currentTimeMillis() + extension;
+        // Extract the file extension (if any)
+        String extension = "";
+        int dotIndex = originalFileName.lastIndexOf('.');
+        if (dotIndex > 0 && dotIndex < originalFileName.length() - 1) {
+            extension = originalFileName.substring(dotIndex);
         }
 
-        return cleanedFileName;
+        // Generate a new clean filename
+        String uniqueFileName = "poster_" + UUID.randomUUID() + extension;
+
+        return uniqueFileName;
     }
+
+
 
     /**
      * Validates that the uploaded file is an image by checking its MIME type.
