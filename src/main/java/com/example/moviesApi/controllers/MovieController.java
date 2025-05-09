@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -54,20 +55,25 @@ public class MovieController {
 	                             .body("An error occurred: " + ex.getMessage());
 	    }
 	}
+    
+	/*--------------UPDATE a Movie -----------------*/
+	@PutMapping("/{id}")
+	public ResponseEntity<MovieDto> updateMovie(
+	        @PathVariable Integer id,
+	        @RequestPart MovieDto movieDto,
+	        @RequestPart(required = false) MultipartFile poster) {
+	    try {
+	        // Ensure the ID from the path is set into the DTO
+	        movieDto.setMovieId(id);
 
-	
-	/**
-	 * Endpoint to create a new movie.
-	 *
-	 * Accepts a multipart/form-data request containing: movie: a JSON
-	 * representation of MovieDto poster: a MultipartFile representing the poster
-	 * image
-	 * 
-	 * @param movieDto the movie details
-	 * @param poster   the movie poster file
-	 * @return the saved MovieDto as a JSON response or an error message.
-	 * @throws IOException
-	 */
+	        MovieDto updatedMovie = movieService.updateMovie(movieDto, poster);
+	        return ResponseEntity.ok(updatedMovie);
+	    } catch (RuntimeException | IOException e) {
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+	    }
+	}
+
+  /*-------------------CREATE a Movie-----------------*/
 	@PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ResponseEntity<?> createMovie(@RequestPart("movie") MovieDto movieDto,
 			@RequestPart("poster") MultipartFile poster) throws IOException {

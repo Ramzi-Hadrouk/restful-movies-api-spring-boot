@@ -53,6 +53,33 @@ public class MovieService {
        
 		return mapToMovieDto(movie);
 	}
+   /*----------------UPDATE a Movie--------------*/
+	public MovieDto updateMovie(MovieDto movieDto, MultipartFile poster) throws IOException {
+	    // 1. Fetch the existing movie
+	    Movie movie = movieRepository.findById(movieDto.getMovieId())
+	            .orElseThrow(() -> new RuntimeException("Movie not found with id: " + movieDto.getMovieId()));
+
+	    // 2. Update fields if they are not null
+	     updateMovieFromDto(movieDto, movie);
+
+
+	    // 3. Handle poster upload if a new poster is provided
+	    if (poster != null && !poster.isEmpty()) {
+	        String posterName = posterService.uploadPoster(poster);
+	        if (posterName == null || posterName.isEmpty()) {
+	            throw new RuntimeException("Failed to upload the movie poster.");
+	        }
+	        String posterUrl = FileUtils.getPosterUrl(posterName);
+	        movie.setPosterName(posterName);
+	        movie.setPosterUrl(posterUrl);
+	    }
+
+	    // 4. Save the updated movie
+	    movieRepository.save(movie);
+
+	    // 5. Return the updated DTO
+	    return mapToMovieDto(movie);
+	}
 
 	
 	
@@ -60,8 +87,20 @@ public class MovieService {
 	
 	
 	
-	
 	//===============HELPERS FUNCTION================
+	
+	/**
+	 * Helper method to Updaet  a Movie entity from a MovieDto.
+	 */
+	public void updateMovieFromDto(MovieDto dto, Movie movie) {
+	    if (dto.getTitle() != null) movie.setTitle(dto.getTitle());
+	    if (dto.getDirector() != null) movie.setDirector(dto.getDirector());
+	    if (dto.getStudio() != null) movie.setStudio(dto.getStudio());
+	    if (dto.getMovieCast() != null) movie.setMovieCast(dto.getMovieCast());
+	    if (dto.getReleaseYear() != null) movie.setReleaseYear(dto.getReleaseYear());
+	    if (dto.getPosterName() != null) movie.setPosterName(dto.getPosterName());
+	}
+
 	
 	/**
 	 * Helper method to build a Movie entity from a MovieDto.
