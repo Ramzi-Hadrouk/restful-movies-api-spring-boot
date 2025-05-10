@@ -19,61 +19,132 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-
 
 @Entity
 @Table(name = "movies")
-@NoArgsConstructor 
-@AllArgsConstructor
-@Getter
-@ToString
 public class Movie {
 	    
-	    @Id
-	    @GeneratedValue(strategy = GenerationType.IDENTITY)
-	    private Integer movieId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer movieId;
 
-	    @NotBlank(message = "Title is required")
-	    @Size(max = 100, message = "Title cannot exceed 100 characters")
-	    @Column(nullable = false, length = 100)
-	    private String title;
+    @NotBlank(message = "Title is required")
+    @Size(max = 100, message = "Title cannot exceed 100 characters")
+    @Column(nullable = false, length = 100)
+    private String title;
 
-	    @NotBlank(message = "Director name is required")
-	    @Size(max = 50, message = "Director name cannot exceed 50 characters")
-	    @Column(nullable = false, length = 50)
-	    private String director;
+    @NotBlank(message = "Director name is required")
+    @Size(max = 50, message = "Director name cannot exceed 50 characters")
+    @Column(nullable = false, length = 50)
+    private String director;
 
-	    @NotBlank(message = "Studio name is required")
-	    @Size(max = 50, message = "Studio name cannot exceed 50 characters")
-	    @Column(nullable = false, length = 50)
-	    private String studio;
+    @NotBlank(message = "Studio name is required")
+    @Size(max = 50, message = "Studio name cannot exceed 50 characters")
+    @Column(nullable = false, length = 50)
+    private String studio;
 
-	    @ElementCollection
-	    @NotEmpty(message = "At least one cast member is required")
-	    @CollectionTable(name = "movie_cast", joinColumns = @JoinColumn(name = "movie_id"))
-	    @Column(name = "cast_member", nullable = false)
-	    private Set<@NotBlank(message = "Cast member name cannot be blank") String> movieCast;
+    @ElementCollection
+    @NotEmpty(message = "At least one cast member is required")
+    @CollectionTable(name = "movie_cast", joinColumns = @JoinColumn(name = "movie_id"))
+    @Column(name = "cast_member", nullable = false)
+    private Set<@NotBlank(message = "Cast member name cannot be blank") String> movieCast;
 
-	    @NotNull(message = "Release year is required")
-	    @Min(value = 1888, message = "Release year must be 1888 or later")
-	    @Max(value = 2100, message = "Release year must be 2100 or earlier")
-	    @Column(nullable = false)
-	    private Integer releaseYear;
+    @NotNull(message = "Release year is required")
+    @Min(value = 1888, message = "Release year must be 1888 or later")
+    @Max(value = 2100, message = "Release year must be 2100 or earlier")
+    @Column(nullable = false)
+    private Integer releaseYear;
 
-	    @NotBlank(message = "Poster URL is required")
-	    @Pattern(regexp = "^(https?://).+", message = "Poster URL must start with http:// or https://")
-	    @Column(nullable = false)
-	    private String posterUrl;
-	    
-	    @NotBlank(message = "posterName is required")
-	    @Size(max = 100, message = "Title cannot exceed 100 characters")
-	    @Column(nullable = false, length = 100)
-	    private String posterName;
-	    
+    @NotBlank(message = "Poster URL is required")
+    @Pattern(regexp = "^(https?://).+", message = "Poster URL must start with http:// or https://")
+    @Column(nullable = false)
+    private String posterUrl;
+    
+    @NotBlank(message = "posterName is required")
+    @Size(max = 100, message = "Title cannot exceed 100 characters")
+    @Column(nullable = false, length = 100)
+    private String posterName;
 
-	}
+	//--------------------	// Constructor with all fields and setters/getters  --------------------//
+    // Default constructor
+    public Movie() {
+    }
+
+    // All-args constructor
+    public Movie(Integer movieId, String title, String director, String studio, Set<String> movieCast, Integer releaseYear, String posterUrl, String posterName) {
+        this.movieId = movieId;
+        this.title = title;
+        this.director = director;
+        this.studio = studio;
+        this.movieCast = movieCast;
+        this.releaseYear = releaseYear;
+        this.posterUrl = posterUrl;
+        this.posterName = posterName;
+    }
+
+    // Getters and Setters
+    public Integer getMovieId() {
+        return movieId;
+    }
+
+    public void setMovieId(Integer movieId) {
+        this.movieId = movieId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDirector() {
+        return director;
+    }
+
+    public void setDirector(String director) {
+        this.director = director;
+    }
+
+    public String getStudio() {
+        return studio;
+    }
+
+    public void setStudio(String studio) {
+        this.studio = studio;
+    }
+
+    public Set<String> getMovieCast() {
+        return movieCast;
+    }
+
+    public void setMovieCast(Set<String> movieCast) {
+        this.movieCast = movieCast;
+    }
+
+    public Integer getReleaseYear() {
+        return releaseYear;
+    }
+
+    public void setReleaseYear(Integer releaseYear) {
+        this.releaseYear = releaseYear;
+    }
+
+    public String getPosterUrl() {
+        return posterUrl;
+    }
+
+    public void setPosterUrl(String posterUrl) {
+        this.posterUrl = posterUrl;
+    }
+
+    public String getPosterName() {
+        return posterName;
+    }
+
+    public void setPosterName(String posterName) {
+        this.posterName = posterName;
+    }
+}
 

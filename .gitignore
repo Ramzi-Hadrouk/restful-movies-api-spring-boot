@@ -33,5 +33,5 @@ build/
 .vscode/
 
 ### uploads ###
-/uploads/posters/*
-!/uploads/posters/images.png
+/src/main/resources/static/uploads/posters*
+!/src/main/resources/static/uploads/postersimages.png
